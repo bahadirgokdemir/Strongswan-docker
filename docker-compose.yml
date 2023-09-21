@@ -1,0 +1,28 @@
+version: '3.3'
+
+services:
+  centos1:
+    container_name: centos1
+    build:
+      context: ./centos1
+    volumes:
+      - ./centos1/ipsec1.conf:/etc/strongswan/ipsec.conf
+      - ./centos1/ipsec.secrets:/etc/strongswan/ipsec.secrets
+      - ./ssl:/ssl
+
+    privileged: true
+    network_mode: "host"
+    command: ["strongswan", "start"]
+
+  centos2:
+    container_name: centos2
+    build:
+      context: ./centos2
+    volumes:
+      - ./centos2/ipsec2.conf:/etc/strongswan/ipsec.conf
+      - ./centos2/ipsec.secrets:/etc/strongswan/ipsec.secrets
+      - ./ssl/sslfilter2.crt:/etc/sslfilter2.crt
+
+    privileged: true
+    network_mode: "host"
+    command: ["strongswan", "start"]
